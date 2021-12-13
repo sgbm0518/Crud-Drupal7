@@ -1,0 +1,4 @@
+name = Crud Custom drupal 7
+description = this is my first curd in drupal 7
+package = Module custom
+core = 7.x

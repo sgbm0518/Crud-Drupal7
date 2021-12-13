@@ -1,0 +1,118 @@
+<?php
+
+
+/**
+ * Implements hook_init().
+ */
+function hook_init() {  //Realice tareas de configuración para solicitudes de páginas no almacenadas en caché.
+    drupal_add_css (drupal_get_path('module','crud7').'/css/crud7_style.css');
+    drupal_add_js (drupal_get_path('module','crud7').'/js/crud7_jfunctions.js');
+}
+
+function hook_permission(){   //Definir permisos de usuario.
+    return array(
+        'administer my module' => array(
+            'title' => t('permisos crud'),
+            'description' => t('permisos para el crud'),
+        ),
+    );
+}
+
+       /**
+        * Implements hook_menu().
+        */
+       function hook_menu() {   //Defina elementos de menú y devoluciones de llamada de página.
+        $items = array();
+        // configuracion pagina
+        $items['crud'] = array(
+                'title'            => 'Crud 7',//obligatorio. El título sin traducir del elemento del menú
+                'page callback'    => 'drupal_get_form',//1 RTA:Llama a la API de formularios de Drupal. 2RTA:Una matriz de argumentos para pasar a la función de devolución de llamada de la página, con la sustitución del componente de la ruta como se ha descrito anteriormente
+                'page arguments'   => array('fcrud'),//1 RTA: Especificar "quién" puede acceder a la página. 2RTA: Pasar la función para pasar a la API del formulario
+                'access arguments' => array('Permisos crud'),
+                'type'             => MENU_CALLBACK,
+            );
+        $items['lista'] = array(
+                'title'            => 'Lista',
+                'page callback'    => array ('lista_resultados'),
+                'access arguments' => array ('Permisos crud'),
+                'type'             => MENU_CALLBACK,
+            );
+        $items['borrador/%'] = array(
+                'title'            => 'Borrar registro',
+                'page callback'    => array ('borrar_registros'),
+                'access arguments' => array(1),//apunta al segundo argumento %
+                'type'             => MENU_CALLBACK,
+            );
+        $items['editar/%'] = array(
+                'title'            => 'Editar Registro',
+                'page callback'    => array ('editar_registros'),
+                'access arguments' => array(1),//apunta al segundo argumento %
+                'type'             => MENU_CALLBACK,
+            );   
+                
+                return $items;
+       
+       }
+
+       function fcrud($form,&$form_state){ //se crea el formulario
+           $form=array();
+        $form['nombre']=array(
+            '#title'=>t('Nombre del usuario'),
+            '#type'=>'textfield',
+            '#description'=>t(''),
+            '#required'=>TRUE,
+            '#default_value'=>'',
+            '#size'=>30,
+            
+           );
+        $form['ap']=array(
+            '#title'=>t('Apellidos'),
+            '#type'=>'textfield',
+            '#description'=>t(''),
+            '#required'=>TRUE,
+            '#default_value'=>'',
+            '#size'=>30,
+            
+           );  
+        $form['tel']=array(
+            '#title'=>t('Telefono'),
+            '#type'=>'textfield',
+            '#description'=>t(''),
+            '#required'=>TRUE,
+            '#default_value'=>'',
+            '#size'=>20,
+            
+           );   
+        $form['submit']=array(
+            '#type'=>'submit',
+            '#value'=>'Cargar',
+        );
+            return $form;
+
+       }
+
+       function fcrud_submit($form,&$form_state){ //se insertan los registros
+           $consulta=db_insert('crud7')
+                    ->fields(array(
+                        'nombre'=>$form_state['values']['nombre'],
+                        'ap'=>$form_state['values']['ap'],
+                        'tel'=>$form_state['values']['tel'],
+                    ) ) 
+                    ->execute();
+                    drupal_set_message('Nuevo registro ok');
+       }
+
+
+       /**
+        *  Consulta a la base de datos
+        */
+
+        function lista_resultados(){
+
+            $salida="";
+            $salida.=1;('Agregar un nuevo registro','crud');
+        
+            $header=array(t('ID'), t('NOMBRE'),t('AP'),t('TELELEFONO'),t('EDITAR'),t('BORRAR'));
+            $query
+        
+        }

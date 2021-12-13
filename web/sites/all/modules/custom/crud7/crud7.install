@@ -1,0 +1,40 @@
+<?php
+
+function crud7_schema() {
+    $schema['crud7'] = array(
+      // Example (partial) specification for table "node".
+      'description' => 'Base de crud',
+      'fields' => array(
+        'id' => array(
+          'description' => 'id',
+          'type' => 'serial',
+          'not null' => TRUE,
+        ),
+        'nombre' => array(
+          'description' => 'Nombre de la persona',
+          'type' => 'varchar',
+          'length' => '50',
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+        'ap' => array(
+          'description' => 'Apellidos',
+          'type' => 'varchar',
+          'length' => '50',
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'tel' => array(
+          'description' => 'Telefono',
+          'type' => 'varchar',
+          'length' => '20',
+          'not null' => TRUE,
+          'default' => '',
+        ),
+      ),
+      'primary key' => array(
+        'id',
+      ),
+    );
+    return $schema;
+  }
